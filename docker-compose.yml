@@ -49,7 +49,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.frontend.entryPoints=https"
-      - "traefik.frontend.rule=Host:solr.sitecore-https-example.local"
+      - "traefik.frontend.rule=Host:solr.sitecore-https.local"
       - "traefik.port=8983"
 
   cm:
@@ -76,5 +76,5 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.frontend.entryPoints=https"
-      - "traefik.frontend.rule=Host:cm.sitecore-https-example.local"
+      - "traefik.frontend.rule=Host:cm.sitecore-https.local"
       - "traefik.passHostHeader=true"

@@ -4,11 +4,9 @@ Demonstrates how to configure a reverse proxy ([Traefik](https://github.com/cont
 
 ## Usage
 
-Add (or edit) environment variables used so they match what Windows build your are running and which Docker repository your Sitecore images is in. See [the .env file](.env).
-
-```text
-    docker-compose up --build
-```
+1. Add (or edit) environment variables used so they match what Windows build your are running and which registry you are using. See [the .env file](.env).
+1. Add `solr.sitecore-https.local` and `cm.sitecore-https.local` to your HOSTS file.
+1. Run `docker-compose up --build`
 
 ## Notes
 
