@@ -8,6 +8,8 @@ Demonstrates how to configure a reverse proxy ([Traefik](https://github.com/cont
 1. Add `solr.sitecore-https.local` and `cm.sitecore-https.local` to your HOSTS file.
 1. Run `docker-compose up --build`
 
+> IMPORTANT: The traefik service in docker-compose.yml is configured to use port 80 and 443, so if you got anything running using the same ports for example IIS, you need to shut it down (or stop the sites) or change the ports.
+
 ## Notes
 
 1. Custom `traefik` image is needed due to an error in traefik that requires containers to run in process isolation mode and official traefik images is not supplied for Windows 1903 and 1909.
