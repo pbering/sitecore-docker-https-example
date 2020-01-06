@@ -12,5 +12,5 @@ Demonstrates how to configure a reverse proxy ([Traefik](https://github.com/cont
 
 ## Notes
 
-1. Custom `traefik` image is needed due to an error in traefik that requires containers to run in process isolation mode and official traefik images is not supplied for Windows 1903 and 1909.
-    1. This issue may be resolved in traefik v2 but there is *another* issue with that official images that keeps the container from starting :)
+1. Custom `traefik` image is needed due to an error in traefik that requires containers to run in process isolation mode but official traefik images is not supplied for Windows 1903 and 1909.
+    1. This issue may be resolved in traefik v2 but there is *another* [issue](https://github.com/containous/traefik/issues/5968) with that official images that keeps the container from starting :)
