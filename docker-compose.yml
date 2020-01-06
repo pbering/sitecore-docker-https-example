@@ -3,14 +3,14 @@ version: "2.4"
 services:
 
   traefik:
-    image: traefik:v2.1.1-windowsservercore-1809
-    # build:
-    #   context: .\traefik
-    #   args:
-    #     BUILD_IMAGE: mcr.microsoft.com/windows/servercore:${WINDOWSSERVERCORE_VERSION}
-    #     BASE_IMAGE: mcr.microsoft.com/windows/nanoserver:${NANOSERVER_VERSION}
-    # isolation: process
-    # user: ContainerAdministrator
+    image: traefik:v1.7.20-nanoserver-${NANOSERVER_VERSION}
+    build:
+      context: .\traefik
+      args:
+        BUILD_IMAGE: mcr.microsoft.com/windows/servercore:${WINDOWSSERVERCORE_VERSION}
+        BASE_IMAGE: mcr.microsoft.com/windows/nanoserver:${NANOSERVER_VERSION}
+    isolation: process
+    user: ContainerAdministrator
     command:
       - "--docker"
       - "--docker.endpoint=npipe:////./pipe/docker_engine"
