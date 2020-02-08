@@ -3,21 +3,13 @@ version: "2.4"
 services:
 
   traefik:
-    image: traefik:v1.7.20-nanoserver-${NANOSERVER_VERSION}
-    build:
-      context: .\traefik
-      args:
-        BUILD_IMAGE: mcr.microsoft.com/windows/servercore:${WINDOWSSERVERCORE_VERSION}
-        BASE_IMAGE: mcr.microsoft.com/windows/nanoserver:${NANOSERVER_VERSION}
-    isolation: process
-    user: ContainerAdministrator
+    image: traefik:v2.1.4-windowsservercore-1809
     command:
-      - "--docker"
-      - "--docker.endpoint=npipe:////./pipe/docker_engine"
-      - "--docker.exposedByDefault=false"
-      - "--api"
-      - "--entryPoints=Name:http Address::80 Redirect.EntryPoint:https"
-      - "--entryPoints=Name:https Address::443 TLS"
+      - "--providers.docker.endpoint=npipe:////./pipe/docker_engine"
+      - "--providers.docker.exposedByDefault=false"
+      - "--api.insecure=true"
+      - "--entryPoints.web.address=:80"
+      - "--entryPoints.web-secure.address=:443"
     ports:
       - "80:80"
       - "443:443"
@@ -48,9 +40,13 @@ services:
       SOLR_LOG_LEVEL: INFO
     labels:
       - "traefik.enable=true"
-      - "traefik.frontend.entryPoints=https"
-      - "traefik.frontend.rule=Host:solr.sitecore-https.local"
-      - "traefik.port=8983"
+      - "traefik.http.routers.solr.entrypoints=web"
+      - "traefik.http.routers.solr.rule=Host(`solr.sitecore-https.local`)"
+      - "traefik.http.routers.solr.middlewares=redirect-to-https"
+      - "traefik.http.middlewares.redirect-to-https.redirectScheme.scheme=https"
+      - "traefik.http.routers.solr-secure.entrypoints=web-secure"
+      - "traefik.http.routers.solr-secure.rule=Host(`solr.sitecore-https.local`)"
+      - "traefik.http.routers.solr-secure.tls=true"
 
   cm:
     image: ${REGISTRY}sitecore-xm-cm:${SITECORE_VERSION}-windowsservercore-${WINDOWSSERVERCORE_VERSION}
@@ -75,6 +71,10 @@ services:
       - solr
     labels:
       - "traefik.enable=true"
-      - "traefik.frontend.entryPoints=https"
-      - "traefik.frontend.rule=Host:cm.sitecore-https.local"
-      - "traefik.passHostHeader=true"
+      - "traefik.http.routers.cm.entrypoints=web"
+      - "traefik.http.routers.cm.rule=Host(`cm.sitecore-https.local`)"
+      - "traefik.http.routers.cm.middlewares=redirect-to-https"
+      - "traefik.http.middlewares.redirect-to-https.redirectScheme.scheme=https"
+      - "traefik.http.routers.cm-secure.entrypoints=web-secure"
+      - "traefik.http.routers.cm-secure.rule=Host(`cm.sitecore-https.local`)"
+      - "traefik.http.routers.cm-secure.tls=true"
