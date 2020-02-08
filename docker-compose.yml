@@ -5,11 +5,11 @@ services:
   traefik:
     image: traefik:v2.1.4-windowsservercore-1809
     command:
+      - "--api.insecure=true"
       - "--providers.docker.endpoint=npipe:////./pipe/docker_engine"
       - "--providers.docker.exposedByDefault=false"
-      - "--api.insecure=true"
       - "--entryPoints.web.address=:80"
-      - "--entryPoints.web-secure.address=:443"
+      - "--entryPoints.websecure.address=:443"
     ports:
       - "80:80"
       - "443:443"
@@ -40,11 +40,11 @@ services:
       SOLR_LOG_LEVEL: INFO
     labels:
       - "traefik.enable=true"
+      - "traefik.http.middlewares.redirect-to-https.redirectScheme.scheme=https"
       - "traefik.http.routers.solr.entrypoints=web"
       - "traefik.http.routers.solr.rule=Host(`solr.sitecore-https.local`)"
       - "traefik.http.routers.solr.middlewares=redirect-to-https"
-      - "traefik.http.middlewares.redirect-to-https.redirectScheme.scheme=https"
-      - "traefik.http.routers.solr-secure.entrypoints=web-secure"
+      - "traefik.http.routers.solr-secure.entrypoints=websecure"
       - "traefik.http.routers.solr-secure.rule=Host(`solr.sitecore-https.local`)"
       - "traefik.http.routers.solr-secure.tls=true"
 
@@ -71,10 +71,10 @@ services:
       - solr
     labels:
       - "traefik.enable=true"
+      - "traefik.http.middlewares.redirect-to-https.redirectScheme.scheme=https"
       - "traefik.http.routers.cm.entrypoints=web"
       - "traefik.http.routers.cm.rule=Host(`cm.sitecore-https.local`)"
       - "traefik.http.routers.cm.middlewares=redirect-to-https"
-      - "traefik.http.middlewares.redirect-to-https.redirectScheme.scheme=https"
-      - "traefik.http.routers.cm-secure.entrypoints=web-secure"
+      - "traefik.http.routers.cm-secure.entrypoints=websecure"
       - "traefik.http.routers.cm-secure.rule=Host(`cm.sitecore-https.local`)"
       - "traefik.http.routers.cm-secure.tls=true"
